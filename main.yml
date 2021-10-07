@@ -1,5 +1,3 @@
-
-from posix import posix_spawn
 from typing import Dict
 import os, json
 import logging
