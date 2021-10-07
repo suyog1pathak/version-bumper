@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from typing import Dict
 import os, json
 import logging
