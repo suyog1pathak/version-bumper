@@ -17,7 +17,7 @@ class operation():
 
   def __init__(self) -> None:
     self.branchName = os.environ.get("GITHUB_REF")
-    self.file = "../package.json"
+    self.file = "./package.json"
     poster.debug("gathered required information..")
     self.indexLimit = 3
 
