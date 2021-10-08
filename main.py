@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 from typing import Dict
 import os, json
 import logging
@@ -16,8 +15,9 @@ poster.setLevel(level=LOGLEVEL)
 class operation():
 
   def __init__(self) -> None:
-    self.branchName = os.environ.get("GITHUB_REF")
-    self.file = "./package.json"
+    self.branchName = ""
+    self.file = "../package.json"
+    self.detailsFile = os.environ.get("GITHUB_EVENT_PATH", "../detail.json")
     poster.debug("gathered required information..")
     self.indexLimit = 3
 
@@ -26,7 +26,15 @@ class operation():
         d = file.read()
         self.jsonData = json.loads(d)
     except Exception as e:
-      raise e  
+      raise e
+
+  def pullInfo(self):
+    try:
+      with open(self.detailsFile) as f:
+        t = f.read()
+        self.branchName = json.loads(t).get("pull_request").get("head").get("ref")      
+    except Exception as e:
+      raise e        
 
   def versionCreator(self, version: str, indexNumber: int) -> str:
   
@@ -72,6 +80,7 @@ class operation():
 def initiate(event: dict = {} , context: dict = {}) -> None:
   try: 
     obj = operation()
+    obj.pullInfo()
     version = obj.bumpUp()
     print(version)
   except Exception as e:
