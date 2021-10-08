@@ -16,7 +16,7 @@ class operation():
 
   def __init__(self) -> None:
     self.branchName = ""
-    self.file = "../package.json"
+    self.file = "./package.json"
     self.detailsFile = os.environ.get("GITHUB_EVENT_PATH", "../detail.json")
     poster.debug("gathered required information..")
     self.indexLimit = 3
