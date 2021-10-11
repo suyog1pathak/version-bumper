@@ -54,7 +54,7 @@ class operation():
     self.jsonData["version"] = version
 
     with open(self.file, 'w') as f:
-      json.dump(self.jsonData, f, ensure_ascii=False, indent=4)    
+      json.dump(self.jsonData, f, ensure_ascii=False, indent=2)    
 
   def bumpUp(self) -> str:
     if "release" in self.branchName:
