@@ -17,7 +17,7 @@ class operation():
   def __init__(self) -> None:
     self.branchName = ""
     self.file = "./package.json"
-    self.detailsFile = os.environ.get("GITHUB_EVENT_PATH", "../detail.json")
+    self.detailsFile = os.environ.get("GITHUB_EVENT_PATH", "./detail.json")
     poster.debug("gathered required information..")
     self.indexLimit = 3
 
@@ -32,7 +32,20 @@ class operation():
     try:
       with open(self.detailsFile) as f:
         t = f.read()
-        self.branchName = json.loads(t).get("pull_request").get("head").get("ref")      
+        """ This is a merge req """
+        if json.loads(t).get("pull_request"):
+         self.branchName = json.loads(t).get("pull_request").get("head").get("ref")
+
+         """ Direct push with local merge """
+        elif json.loads(t).get("base_ref"):
+          self.branchName = json.loads(t).get("base_ref")
+          poster.debug("Branchname == {}".format(self.branchName))
+
+        else:
+          """ Direct Push on the same branch """
+          raise Exception("Error :: As this is the direct commit on branch")
+
+        #self.branchName = json.loads(t).get("pull_request").get("head").get("ref")      
     except Exception as e:
       raise e        
 
@@ -54,7 +67,7 @@ class operation():
     self.jsonData["version"] = version
 
     with open(self.file, 'w') as f:
-      json.dump(self.jsonData, f, ensure_ascii=False, indent=2)    
+      json.dump(self.jsonData, f, ensure_ascii=False, indent=4)    
 
   def bumpUp(self) -> str:
     if "release" in self.branchName:
