@@ -78,7 +78,7 @@ class operation():
     try:
       with open(self.file, 'w') as f:
         poster.debug("Updating package.json")
-        json.dump(self.jsonData, f, ensure_ascii=False, indent=2)
+        json.dump(self.jsonData, f, ensure_ascii=False, indent=1)
     except Exception as e:
       poster.error(e)
       raise e        
